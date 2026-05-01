@@ -1,0 +1,99 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Employee {
+  id           String     @id @default(cuid())
+  name         String
+  role         String     // SALA, COCINA, BOTH
+  weeklyHours  Float
+  active       Boolean    @default(true)
+  color        String     @default("#6366f1")
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  shifts       Shift[]
+  requests     Request[]
+  vacations    Vacation[]
+}
+
+// Bar opening/closing config per day of week
+model BarDayConfig {
+  id          String  @id @default(cuid())
+  dayOfWeek   Int     // 0=Dom, 1=Lun, 2=Mar, 3=Mié, 4=Jue, 5=Vie, 6=Sáb
+  openTime    String  @default("08:00")
+  closeTime   String  @default("23:00")
+  isOpen      Boolean @default(true)
+}
+
+// Minimum staffing per time slot and day of week
+model StaffingRule {
+  id          String  @id @default(cuid())
+  dayOfWeek   Int     // -1 = todos los días
+  startTime   String
+  endTime     String
+  salaCount   Int     @default(1)
+  cocinaCount Int     @default(0)
+}
+
+model Schedule {
+  id        String   @id @default(cuid())
+  year      Int
+  month     Int      // 1-12
+  status    String   @default("DRAFT") // DRAFT, PUBLISHED
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  shifts    Shift[]
+
+  @@unique([year, month])
+}
+
+model Shift {
+  id          String    @id @default(cuid())
+  scheduleId  String
+  schedule    Schedule  @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+  employeeId  String?
+  employee    Employee? @relation(fields: [employeeId], references: [id])
+  date        String    // "2025-06-15"
+  startTime   String    // "08:00"
+  endTime     String    // "16:00"
+  environment String    // SALA, COCINA
+  hasBreak    Boolean   @default(false)
+  isExtra     Boolean   @default(false)
+  notes       String?
+  createdAt   DateTime  @default(now())
+}
+
+model Request {
+  id          String   @id @default(cuid())
+  employeeId  String
+  employee    Employee @relation(fields: [employeeId], references: [id])
+  year        Int
+  month       Int
+  type        String   // DAY_OFF, SHIFT_PREFERENCE, OTHER
+  details     String
+  status      String   @default("PENDING") // PENDING, APPROVED, REJECTED
+  createdAt   DateTime @default(now())
+}
+
+model Vacation {
+  id          String   @id @default(cuid())
+  employeeId  String
+  employee    Employee @relation(fields: [employeeId], references: [id])
+  startDate   String
+  endDate     String
+  status      String   @default("PENDING") // PENDING, APPROVED, REJECTED
+  notes       String?
+  createdAt   DateTime @default(now())
+}
+
+model Holiday {
+  id        String @id @default(cuid())
+  date      String
+  name      String
+  type      String // NATIONAL, AUTONOMY, PROVINCE, LOCAL
+}
