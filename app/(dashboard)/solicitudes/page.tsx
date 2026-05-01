@@ -188,7 +188,7 @@ export default function SolicitudesPage() {
           <div className="space-y-4 py-2">
             <div>
               <Label>Empleado</Label>
-              <Select value={form.employeeId} onValueChange={(v) => setForm({ ...form, employeeId: v })}>
+              <Select value={form.employeeId} onValueChange={(v) => setForm({ ...form, employeeId: v ?? form.employeeId })}>
                 <SelectTrigger><SelectValue placeholder="Selecciona empleado" /></SelectTrigger>
                 <SelectContent>
                   {employees.map((e) => <SelectItem key={e.id} value={e.id}>{e.name}</SelectItem>)}
@@ -217,7 +217,7 @@ export default function SolicitudesPage() {
             </div>
             <div>
               <Label>Tipo</Label>
-              <Select value={form.type} onValueChange={(v) => setForm({ ...form, type: v })}>
+              <Select value={form.type} onValueChange={(v) => setForm({ ...form, type: v ?? form.type })}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="DAY_OFF">Día libre</SelectItem>

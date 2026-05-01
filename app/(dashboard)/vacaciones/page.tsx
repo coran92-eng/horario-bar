@@ -172,7 +172,7 @@ export default function VacacionesPage() {
           <div className="space-y-4 py-2">
             <div>
               <Label>Empleado</Label>
-              <Select value={form.employeeId} onValueChange={(v) => setForm({ ...form, employeeId: v })}>
+              <Select value={form.employeeId} onValueChange={(v) => setForm({ ...form, employeeId: v ?? form.employeeId })}>
                 <SelectTrigger><SelectValue placeholder="Selecciona empleado" /></SelectTrigger>
                 <SelectContent>
                   {employees.map((e) => <SelectItem key={e.id} value={e.id}>{e.name}</SelectItem>)}

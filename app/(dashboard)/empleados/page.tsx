@@ -191,7 +191,7 @@ export default function EmpleadosPage() {
             </div>
             <div>
               <Label>Rol</Label>
-              <Select value={form.role} onValueChange={(v) => setForm({ ...form, role: v })}>
+              <Select value={form.role} onValueChange={(v) => setForm({ ...form, role: v ?? form.role })}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="SALA">Sala</SelectItem>

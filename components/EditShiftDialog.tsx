@@ -100,7 +100,7 @@ export function EditShiftDialog({
 
           <div>
             <Label>Ambiente</Label>
-            <Select value={environment} onValueChange={setEnvironment}>
+            <Select value={environment} onValueChange={(v) => setEnvironment(v ?? environment)}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
@@ -113,7 +113,7 @@ export function EditShiftDialog({
 
           <div>
             <Label>Empleado</Label>
-            <Select value={employeeId} onValueChange={setEmployeeId}>
+            <Select value={employeeId} onValueChange={(v) => setEmployeeId(v ?? employeeId)}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
