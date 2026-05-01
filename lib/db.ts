@@ -10,7 +10,6 @@ function createPrismaClient() {
     `file:${path.join(process.cwd(), "dev.db")}`;
   const authToken = process.env.TURSO_AUTH_TOKEN;
   const adapter = new PrismaLibSql({ url, ...(authToken ? { authToken } : {}) });
-  // @ts-expect-error Prisma 7 adapter API
   return new PrismaClient({ adapter });
 }
 
